@@ -75,7 +75,7 @@ class Node {
     // <--- ADD YOUR CODE HERE --->
 public:
     int value;
-    Node* next;
+    Node *next;
 
     Node(int value) {
         this->value = value;
@@ -217,9 +217,6 @@ int main() {
 
     auto duration = duration_cast<nanoseconds>(stop_time - start_time);
     cout << "Array List Stack execution time: " << duration.count() << " nanoseconds" << endl;
-
-
-
 
 
     return 0;
