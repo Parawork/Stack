@@ -1,71 +1,78 @@
 #include <iostream>
-//#include <chrono>
+#include <chrono>
+
 using namespace std;
 using namespace std::chrono;
 
-class Stack{
-    private:
-        int top;
-        int* array;
-        int size;
-    public:
-        Stack(int size) {
-            top = -1;
-            array = new int[size];
-            this->size = size;
-        }
-        void push(int value) {
-            if (isFull()) {
-                cout << "Stack Overflow" << endl;
-            } else {
-                top++;
-                array[top] = value;
-            }
-        }
-        int pop() {
-            if (isEmpty()) {
-                cout << "Stack Underflow" << endl;
-                return 0;
-            } else {
-                int popValue = array[top];
-                top--;
-                return popValue;
-            }
-        }
-        bool isEmpty()  {
-            if (top == -1) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        bool isFull() {
-            if (top == size-1) {
-                return true;
-            } else {
-                return false;
-            }
-        }
 
-        int stacktop() {
-            if(top == -1) {
-                cout << INT_MIN << endl;
-                return 0;
-            }
-            else{
-                return array[top];
-            }
+class arrayListStack {
+    // <--- ADD YOUR CODE HERE --->
+private:
+    int top;
+    int *array;
+    int size;
+public:
+    arrayListStack(int size) {
+        top = -1;
+        array = new int[size];
+        this->size = size;
+    }
 
+    void push(int value) {
+        if (isFull()) {
+            cout << "Stack Overflow" << endl;
+        } else {
+            top++;
+            array[top] = value;
         }
+    }
 
-        void display() {
-            for (int i = 0; i <= top; i++) {
-                cout << array[i] << " ";
-            }
-            cout << endl;
+    int pop() {
+        if (isEmpty()) {
+            cout << "Stack Underflow" << endl;
+            return 0;
+        } else {
+            int popValue = array[top];
+            top--;
+            return popValue;
         }
+    }
+
+    bool isEmpty() {
+        if (top == -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    bool isFull() {
+        if (top == size - 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    int stackTop() {
+        if (top == -1) {
+            cout << INT_MIN << endl;
+            return 0;
+        } else {
+            return array[top];
+        }
+    }
+
+    void display() {
+        for (int i = top; i >= 0; i--) {
+            cout << array[i] << " ";
+        }
+        cout << endl;
+    }
 };
+
 class Node {
+    // <--- ADD YOUR CODE HERE --->
 public:
     int value;
     Node* next;
@@ -75,47 +82,52 @@ public:
         next = nullptr;
     }
 };
-class LinkedList {
-private:
-    Node* head;
-    Node* top;
 
+class linkedListStack {
+    // <--- ADD YOUR CODE HERE --->
+private:
+    Node *head;
+    Node *top;
 public:
-    LinkedList(int value) {
+    linkedListStack() {
         head = nullptr;
         top = nullptr;
     }
+
     void push(int value) {
-        Node* newNode = new Node(value);
         if (isEmpty()) {
+            Node *newNode = new Node(value);
             head = newNode;
             top = newNode;
         } else {
+            Node *newNode = new Node(value);
             top->next = newNode;
             top = newNode;
         }
     }
 
     int pop() {
-        if (isEmpty()) return INT_MIN;
-        Node* temp = head;
-        if (head == top) {
-            head = nullptr;
-            top = nullptr;
+        if (isEmpty()) {
+            cout << "Stack Underflow" << endl;
+            return 0;
         } else {
-            Node* pre = head;
-            while(temp->next) {
-                pre = temp;
-                temp = temp->next;
+            int x = top->value;
+            if (top == head) {
+                head = nullptr;
+                top = nullptr;
+            } else {
+                Node *temp = head;
+                while (temp->next != top) {
+                    temp = temp->next;
+                }
+                temp->next = nullptr;
+                top = temp;
             }
-            top = pre;
-            top->next = nullptr;
+            return x;
         }
-        delete temp;
-        return temp->value;
     }
 
-    bool isEmpty(){
+    bool isEmpty() {
         if (head == nullptr) {
             return true;
         } else {
@@ -129,81 +141,86 @@ public:
     }
 
     void display() {
-        Node* temp = head;
+        vector<int> array;
+        Node *temp = head;
         while (temp != nullptr) {
-            cout << temp->value << " ";
+            int value = temp->value;
+            array.insert(array.begin(), value);
             temp = temp->next;
         }
+        for (int value: array) {
+            cout << value << " ";
+        }
         cout << endl;
+
     }
-
-
-
-
 
 };
 
+
 int main() {
 
-    auto startTime = high_resolution_clock::now();
+    auto start_time1 = high_resolution_clock::now();
+    linkedListStack ll_Stack;
+    ll_Stack.push(10);
+    ll_Stack.push(5);
+    ll_Stack.push(11);
+    ll_Stack.push(15);
+    ll_Stack.push(23);
+    ll_Stack.push(6);
+    ll_Stack.push(18);
+    ll_Stack.push(20);
+    ll_Stack.push(17);
+    ll_Stack.display();
+    ll_Stack.pop();
+    ll_Stack.pop();
+    ll_Stack.pop();
+    ll_Stack.pop();
+    ll_Stack.pop();
+    ll_Stack.display();
+    ll_Stack.push(4);
+    ll_Stack.push(30);
+    ll_Stack.push(3);
+    ll_Stack.push(1);
+    ll_Stack.display();
+    auto stop_time1 = high_resolution_clock::now();
+    auto duration1 = duration_cast<nanoseconds>(stop_time1 - start_time1);
+    cout << "Linked List Stack execution time : " << duration1.count() << " nanoseconds" << endl;
 
-    auto* stack = new Stack(10);
+
+    auto start_time = high_resolution_clock::now();
+
+    arrayListStack al_Stack(15);
+    al_Stack.push(8);
+    al_Stack.push(10);
+    al_Stack.push(5);
+    al_Stack.push(11);
+    al_Stack.push(15);
+    al_Stack.push(23);
+    al_Stack.push(6);
+    al_Stack.push(18);
+    al_Stack.push(20);
+    al_Stack.push(17);
+    al_Stack.display();
+    al_Stack.pop();
+    al_Stack.pop();
+    al_Stack.pop();
+    al_Stack.pop();
+    al_Stack.pop();
+    al_Stack.display();
+    al_Stack.push(4);
+    al_Stack.push(30);
+    al_Stack.push(3);
+    al_Stack.push(1);
+    al_Stack.display();
+    auto stop_time = high_resolution_clock::now();
+
+    auto duration = duration_cast<nanoseconds>(stop_time - start_time);
+    cout << "Array List Stack execution time: " << duration.count() << " nanoseconds" << endl;
 
 
-    stack->push(8);
-    stack->push(10);
-    stack->push(5);
-    stack->push(11);
-    stack->push(15);
-    stack->push(23);
-    stack->push(6);
-    stack->push(18);
-    stack->push(20);
-    stack->push(17);
-    stack->display();
-    stack->pop();
-    stack->pop();
-    stack->pop();
-    stack->pop();
-    stack->pop();
-    stack->display();
-    stack->push(4);
-    stack->push(30);
-    stack->push(3);
-    stack->push(1);
-    stack->display();
 
-    auto endTime = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(endTime - startTime);
-    std::cout << "ArrayList duration: " << duration.count() << " microseconds" << std::endl;
 
-    startTime = high_resolution_clock::now();
-    auto* StackLinkedList = new LinkedList(10);\
 
-    StackLinkedList->push(8);
-    StackLinkedList->push(10);
-    StackLinkedList->push(5);
-    StackLinkedList->push(11);
-    StackLinkedList->push(15);
-    StackLinkedList->push(23);
-    StackLinkedList->push(6);
-    StackLinkedList->push(18);
-    StackLinkedList->push(20);
-    StackLinkedList->push(17);
-    StackLinkedList->display();
-    StackLinkedList->pop();
-    StackLinkedList->pop();
-    StackLinkedList->pop();
-    StackLinkedList->pop();
-    StackLinkedList->pop();
-    StackLinkedList->display();
-    StackLinkedList->push(4);
-    StackLinkedList->push(30);
-    StackLinkedList->push(3);
-    StackLinkedList->push(1);
-    StackLinkedList->display();
-    endTime = high_resolution_clock::now();
-    duration = duration_cast<microseconds>(endTime - startTime);
-    std::cout << "LinkedList duration: " << duration.count() << " microseconds" << std::endl;
     return 0;
 }
