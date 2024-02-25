@@ -1,5 +1,7 @@
 #include <iostream>
 #include <chrono>
+#include <vector>
+#include <fstream>
 
 using namespace std;
 using namespace std::chrono;
@@ -159,65 +161,81 @@ public:
 
 
 int main() {
+    vector<int> arrayStackVector, linkedListStackVector;
+    for (int i = 0; i < 100; ++i) {
+        auto start_time1 = high_resolution_clock::now();
+        linkedListStack ll_Stack;
+        ll_Stack.push(10);
+        ll_Stack.push(5);
+        ll_Stack.push(11);
+        ll_Stack.push(15);
+        ll_Stack.push(23);
+        ll_Stack.push(6);
+        ll_Stack.push(18);
+        ll_Stack.push(20);
+        ll_Stack.push(17);
+        ll_Stack.display();
+        ll_Stack.pop();
+        ll_Stack.pop();
+        ll_Stack.pop();
+        ll_Stack.pop();
+        ll_Stack.pop();
+        ll_Stack.display();
+        ll_Stack.push(4);
+        ll_Stack.push(30);
+        ll_Stack.push(3);
+        ll_Stack.push(1);
+        ll_Stack.display();
+        auto stop_time1 = high_resolution_clock::now();
+        auto duration1 = duration_cast<nanoseconds>(stop_time1 - start_time1);
+        linkedListStackVector.push_back(duration1.count());
 
-    auto start_time1 = high_resolution_clock::now();
-    linkedListStack ll_Stack;
-    ll_Stack.push(10);
-    ll_Stack.push(5);
-    ll_Stack.push(11);
-    ll_Stack.push(15);
-    ll_Stack.push(23);
-    ll_Stack.push(6);
-    ll_Stack.push(18);
-    ll_Stack.push(20);
-    ll_Stack.push(17);
-    ll_Stack.display();
-    ll_Stack.pop();
-    ll_Stack.pop();
-    ll_Stack.pop();
-    ll_Stack.pop();
-    ll_Stack.pop();
-    ll_Stack.display();
-    ll_Stack.push(4);
-    ll_Stack.push(30);
-    ll_Stack.push(3);
-    ll_Stack.push(1);
-    ll_Stack.display();
-    auto stop_time1 = high_resolution_clock::now();
-    auto duration1 = duration_cast<nanoseconds>(stop_time1 - start_time1);
-    cout << "Linked List Stack execution time : " << duration1.count() << " nanoseconds" << endl;
 
+        auto start_time = high_resolution_clock::now();
 
-    auto start_time = high_resolution_clock::now();
+        arrayListStack al_Stack(15);
+        al_Stack.push(8);
+        al_Stack.push(10);
+        al_Stack.push(5);
+        al_Stack.push(11);
+        al_Stack.push(15);
+        al_Stack.push(23);
+        al_Stack.push(6);
+        al_Stack.push(18);
+        al_Stack.push(20);
+        al_Stack.push(17);
+        al_Stack.display();
+        al_Stack.pop();
+        al_Stack.pop();
+        al_Stack.pop();
+        al_Stack.pop();
+        al_Stack.pop();
+        al_Stack.display();
+        al_Stack.push(4);
+        al_Stack.push(30);
+        al_Stack.push(3);
+        al_Stack.push(1);
+        al_Stack.display();
+        auto stop_time = high_resolution_clock::now();
 
-    arrayListStack al_Stack(15);
-    al_Stack.push(8);
-    al_Stack.push(10);
-    al_Stack.push(5);
-    al_Stack.push(11);
-    al_Stack.push(15);
-    al_Stack.push(23);
-    al_Stack.push(6);
-    al_Stack.push(18);
-    al_Stack.push(20);
-    al_Stack.push(17);
-    al_Stack.display();
-    al_Stack.pop();
-    al_Stack.pop();
-    al_Stack.pop();
-    al_Stack.pop();
-    al_Stack.pop();
-    al_Stack.display();
-    al_Stack.push(4);
-    al_Stack.push(30);
-    al_Stack.push(3);
-    al_Stack.push(1);
-    al_Stack.display();
-    auto stop_time = high_resolution_clock::now();
+        auto duration = duration_cast<nanoseconds>(stop_time - start_time);
+        arrayStackVector.push_back(duration.count());
+    }
 
-    auto duration = duration_cast<nanoseconds>(stop_time - start_time);
-    cout << "Array List Stack execution time: " << duration.count() << " nanoseconds" << endl;
+    ofstream outputFile("output.txt");
+    int sum = 0;
+    for (const int& value : linkedListStackVector) {
+        sum += value;
+    }
+    outputFile << "Linked List Average : " << sum / linkedListStackVector.size() << endl;
 
+    sum = 0;
+
+    for (const int& value : linkedListStackVector) {
+        sum += value;
+    }
+    outputFile << "Array List Average : " << sum / arrayStackVector.size() << endl;
+    outputFile.close();
 
     return 0;
 }

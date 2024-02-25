@@ -1,0 +1,2 @@
+Linked List Average : 12951
+Array List Average : 12951
